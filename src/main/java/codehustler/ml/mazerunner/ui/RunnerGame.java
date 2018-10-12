@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 import javax.swing.JFrame;
 
+import codehustler.ml.mazerunner.HumanPlayer;
 import codehustler.ml.mazerunner.Player;
 import codehustler.ml.mazerunner.PlayerFactory;
 import lombok.Getter;
@@ -37,7 +38,7 @@ public class RunnerGame extends JFrame {
 	private List<MazeRunner> runners = Collections.synchronizedList(new ArrayList<>());
 
 	@Setter
-	private int selectedDelay = 0;
+	private int selectedDelay = 20;
 
 	@Setter
 	private boolean rendergame = true;
@@ -49,11 +50,13 @@ public class RunnerGame extends JFrame {
 	private PlayerFactory playerFactory;
 
 	private String[] maps = new String[] { "map_01.map", "map_02.map", "map_03.map" };
+
+	private GameInputHandler inputHandler;
 	
 
 	@SneakyThrows
 	private GameMap pickRandomMap() {
-		return new GameMap(maps[2], this);
+		return new GameMap(maps[1], this);
 	}
 
 	public RunnerGame() throws Exception {
@@ -61,7 +64,9 @@ public class RunnerGame extends JFrame {
 		this.setTitle("AI Runner");
 		this.setLayout(new BorderLayout());
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		this.addKeyListener(new GameInputProvider(this));
+		
+		this.inputHandler = new GameInputHandler(this);
+		this.addKeyListener(inputHandler);
 
 		this.map = pickRandomMap();
 
@@ -78,11 +83,8 @@ public class RunnerGame extends JFrame {
 
 
 	private List<MazeRunner> createRunners(Set<Player> players) {
-		return players.stream().map(this::createRunner).collect(Collectors.toList());
-	}
-
-	private MazeRunner createRunner(Player player) {
-		return new MazeRunner(player, this);
+		players.stream().filter(HumanPlayer.class::isInstance).forEach(inputHandler::addHumanPlayer);
+		return players.stream().map(p -> new MazeRunner(p, this)).collect(Collectors.toList());
 	}
 
 	public void run() {
