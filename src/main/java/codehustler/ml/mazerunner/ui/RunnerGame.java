@@ -48,12 +48,12 @@ public class RunnerGame extends JFrame {
 	@Setter
 	private PlayerFactory playerFactory;
 
-	private String[] maps = new String[] { "map_01.map", "map_02.map", "map_03.map" };
+	private String[] maps = new String[] { "map_01.map", "map_02.map", "map_03.map", "map_04.map" };
 	
 
 	@SneakyThrows
 	private GameMap pickRandomMap() {
-		return new GameMap(maps[2], this);
+		return new GameMap(maps[3], this);
 	}
 
 	public RunnerGame() throws Exception {

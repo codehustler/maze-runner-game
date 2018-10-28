@@ -9,12 +9,17 @@ import java.util.Comparator;
  */
 public interface Player extends Comparable<Player> {
 	
+	enum Result {COMPLETED, DNF}
 	/**
 	 * @return the score of the player
 	 */
 	double getScore();
 	void setScore(double score);
 
+	Result getResult();
+	void setResult(Result result);
+	
+	
 	/**
 	 * @param inputs the observations made by the player
 	 */
