@@ -121,10 +121,8 @@ public strictfp class MazeRunner {
 		player.setInputs(observations);
 		// recalculate velocity
 		if (player.isTurnLeft()) {
-			// System.out.println("rot left");
 			velocity = velocity.multiply(rotationMatrixCCW);
 		} else if (player.isTurnRight()) {
-			// System.out.println("rot right");
 			velocity = velocity.multiply(rotationMatrixCW);
 		}
 
